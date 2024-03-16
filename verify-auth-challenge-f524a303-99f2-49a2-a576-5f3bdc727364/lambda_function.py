@@ -1,6 +1,6 @@
 import json
 
-def lambda_handler(event, context):  
+def lambda_handler(event, context):
     try:
         challenge = event['request']['privateChallengeParameters']['challenge']
         

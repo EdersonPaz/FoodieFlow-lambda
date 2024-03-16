@@ -21,9 +21,21 @@ jobs:
 
     - name: Zip directories and upload to S3
       run: |
-        for dir in $(find $GITHUB_WORKSPACE -type d -not -path "$GITHUB_WORKSPACE/.github" -not -path "$GITHUB_WORKSPACE/.git"); do
-          zip -r "${dir}.zip" "$dir" -x "FoodieFlow-lambda-tf/FoodieFlow-lambda-tf/.git/*"
-          aws s3 cp "${dir}.zip" s3://lambda-foodieflow/
+        dirs_to_zip=(
+          "create-auth-challenge-9c5f29cd-001c-4fb3-b71a-9ef9037004ee"
+          "define-auth-challenge-c59f32d6-215c-45fc-8613-3dfb836d627b"
+          "jwt-validator-3b16b3a5-cce1-4a6e-87c0-b833260b8fad"
+          "pre-signup-f6c5e86c-11e7-46ed-94da-b7f435eb16a1"
+          "pre-signup-new-42ae4e8d-270e-4ccd-bf8c-0bbdf3119675"
+          "pre-signup-zip-67a5b6c8-4835-4ed3-a289-7137d4a34e1e"
+          "verify-auth-challenge-f524a303-99f2-49a2-a576-5f3bdc727364"
+        )
+
+        for dir in "${dirs_to_zip[@]}"; do
+          if [ -d "$GITHUB_WORKSPACE/$dir" ]; then
+            zip -r "${dir}.zip" "$GITHUB_WORKSPACE/$dir"
+            aws s3 cp "${dir}.zip" s3://lambda-foodieflow/
+          fi
         done
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
