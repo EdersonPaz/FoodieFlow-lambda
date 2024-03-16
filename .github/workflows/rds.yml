@@ -24,7 +24,7 @@ jobs:
         for dir in $(find $GITHUB_WORKSPACE -type d); do
           if [ "$dir" != "$GITHUB_WORKSPACE/.github" ]; then  # Ignore .github directory
            zip -r "${dir}.zip" "$dir"
-           aws s3 cp "${dir}.zip" s3://my-bucket/
+           aws s3 cp "${dir}.zip" s3://lambda-foodieflow/
           fi
         done
       env:
