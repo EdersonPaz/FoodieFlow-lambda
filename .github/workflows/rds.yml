@@ -22,7 +22,7 @@ jobs:
     - name: Zip directories and upload to S3
       run: |
         for dir in $(find $GITHUB_WORKSPACE -type d -not -path "$GITHUB_WORKSPACE/.github" -not -path "$GITHUB_WORKSPACE/.git"); do
-          zip -r "${dir}.zip" "$dir"
+          zip -r "${dir}.zip" "$dir" -x ".git"
           aws s3 cp "${dir}.zip" s3://lambda-foodieflow/
         done
       env:
